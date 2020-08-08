@@ -1,6 +1,6 @@
 package bsq
 
-object bsq {
+object Bsq {
   def exitWith(value: Int, str: String): Unit = {
     System.err.println(str)
     sys.exit(value)
@@ -10,7 +10,7 @@ object bsq {
     if (args.length != 1)
       exitWith(1, "Error: Expected 1 argument.")
 
-    val solvedBoard: solvedBoard = new solvedBoard(new FileContent(args.headOption))
+    val solvedBoard: SolvedBoard = new SolvedBoard(new FileContent(args.headOption))
     solvedBoard.result.foreach(e => println(e))
   }
 }

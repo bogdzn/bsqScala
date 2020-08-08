@@ -1,7 +1,7 @@
 package  bsq
 import scala.annotation.tailrec
 
-class solvedBoard(currentBoard: FileContent) {
+class SolvedBoard(currentBoard: FileContent) {
   def exitWith(code: Int, str: String): Int = {
     System.err.println(str)
     sys.exit(code)
@@ -10,9 +10,7 @@ class solvedBoard(currentBoard: FileContent) {
   def solve(currentBoard: Array[String]): Array[String] = {
     case class Square(x: Int, y: Int, size: Int) {
       def isOutOfBounds(optBoard: Array[Array[Int]], pos: Square): Boolean = {
-        if (pos.x < 0 || pos.y < 0) true
-        else if (pos.x > optBoard.length - 1 || pos.y > optBoard(pos.x).length - 1) true
-        else false
+        ((pos.x < 0 || pos.y < 0) || (pos.x > optBoard.length - 1 || pos.y > optBoard(pos.x).length - 1))
       }
 
       def toNext(board: Array[Array[Int]]): Option[Square] = {
@@ -50,15 +48,16 @@ class solvedBoard(currentBoard: FileContent) {
 
       @tailrec
       def getBiggestSquare(board: Array[Array[Int]], posOpt: Option[Square], bsq: Square): Square = {
-        if (posOpt.isEmpty) return bsq
-
-        val pos = posOpt.get
-        if (pos.isSquare(board)) {
-          val newBsq = Square(pos.x, pos.y, pos.getSquareSize(board))
-          if (newBsq.size > bsq.size)
-            getBiggestSquare(updateBoardValues(board, newBsq), pos.toNext(board), newBsq)
-          else getBiggestSquare(updateBoardValues(board, newBsq), pos.toNext(board), bsq)
-        } else getBiggestSquare(board, pos.toNext(board), bsq)
+        if (posOpt.isEmpty) bsq
+        else {
+          val pos = posOpt.getOrElse(Square(1, 1, 0))
+          if (pos.isSquare(board)) {
+            val newBsq = Square(pos.x, pos.y, pos.getSquareSize(board))
+            if (newBsq.size > bsq.size)
+              getBiggestSquare(updateBoardValues(board, newBsq), pos.toNext(board), newBsq)
+            else getBiggestSquare(updateBoardValues(board, newBsq), pos.toNext(board), bsq)
+          } else getBiggestSquare(board, pos.toNext(board), bsq)
+        }
       }
 
       getBiggestSquare(board, Some(Square(1, 1, 0)), Square(0, 0, 0))
@@ -66,7 +65,6 @@ class solvedBoard(currentBoard: FileContent) {
 
     def getSolvedMap(bsq: Square, oldBoard: Array[String]): Array[String] = {
       def addSolvedLine(idx: Int, sqSize: Int, line: String): String = {
-
         val startOfLine = line.slice(0, idx)
         val endOfLine = if (sqSize + idx < line.length) line.slice(idx + sqSize, line.length) else ""
         startOfLine + ("x" * sqSize) + endOfLine
