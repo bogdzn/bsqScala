@@ -2,15 +2,16 @@ import bsq._
 import org.scalatest.funsuite.AnyFunSuite
 
 class SetSpec extends AnyFunSuite {
-  val validFile = new FileContent(Option("./maps/intermediate_34_137_empty"))
-  val invalidFile = new FileContent(Option("./invalidFile"))
+
+  def generateIntArray(size: Int): Array[Array[Int]] = {
+    var result: Array[Array[Int]] =
+      for (idx <- 0 until size) result :+= Array.fill(size)(0 | 1)
+    result
+  }
 
   val posOutOfBounds: Square = Square(232, 12, 0)
   val posCorrect: Square = Square(1, 1, 0)
-
-  val board = new SolvedBoard(validFile)
-  val intBoard: Array[Array[Int]] = board.toIntMap(validFile.content.get)
-
+  val intBoard: Array[Array[Int]] = generateIntArray(10)
 
 
   test("isOutOfBounds") {
@@ -25,7 +26,7 @@ class SetSpec extends AnyFunSuite {
     val expectFalse : Option[Square] = posOutOfBounds.toNext(intBoard)
     val expectTrue : Option[Square] = posCorrect.toNext(intBoard)
 
-    assert(expectTrue.isDefined, "toNext should be ok for position(1, 1).")
+    assert(expectTrue.nonEmpty, "toNext should be ok for position(1, 1).")
     assert(expectTrue.get.x == 2, "expectTrue.x should be equal to 2.")
     assert(expectTrue.get.y == 1, "expectTrue.y should be equal to 1.")
     assert(expectFalse.isEmpty, "toNext should fail for position(232, 12)")
