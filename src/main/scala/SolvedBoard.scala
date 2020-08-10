@@ -2,11 +2,6 @@ package  bsq
 import scala.annotation.tailrec
 
 class SolvedBoard(currentBoard: FileContent) {
-  def exitWith(code: Int, str: String): Int = {
-    System.err.println(str)
-    sys.exit(code)
-  }
-
   def solve(currentBoard: Array[String]): Array[String] = {
     case class Square(x: Int, y: Int, size: Int) {
       def isOutOfBounds(optBoard: Array[Array[Int]], pos: Square): Boolean = {
@@ -29,11 +24,10 @@ class SolvedBoard(currentBoard: FileContent) {
 
     def toIntMap(currentBoard: Array[String]): Array[Array[Int]] = {
       def getIntArray(str: String, expectedLength: Int): Array[Int] = {
-        if (str.length != expectedLength)
-          exitWith(3, "Error: Every line should have the same length.")
+        if (str.length != expectedLength) ExitWith(3, "Error: Every line should have the same length.")
         str.map(char => if ((char == 'o') || (char == '\n')) 0
         else if (char == '.') 1
-        else exitWith(2, s"Error: Unknown $char character.")).toArray
+        else ExitWith(2, s"Error: Unknown $char character.").code).toArray
       }
 
       val length = currentBoard(0).length
@@ -99,6 +93,6 @@ class SolvedBoard(currentBoard: FileContent) {
     if (bsq.size == 0) currentBoard else getSolvedMap(bsq, currentBoard)
   }
 
-  if (currentBoard.content.isEmpty) exitWith(1, "Empty file content.")
+  if (currentBoard.content.isEmpty) ExitWith(1, "Empty file content.")
   val result: Array[String] = solve(currentBoard.content.get)
 }
