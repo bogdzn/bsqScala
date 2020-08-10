@@ -5,7 +5,7 @@ class FileContent(filenameOption: Option[String]) {
 
   def get(filenameOption: Option[String]): Option[Array[String]] = {
     def using[A <: {def close(): Unit}, B](resource: A)(f: A => B): B =
-      try { f(resource) } finally { resource.close() }
+      try f(resource) finally resource.close()
 
     val filename: String = filenameOption.getOrElse("No name given.")
     try {

@@ -2,38 +2,19 @@ package  bsq
 import scala.annotation.tailrec
 
 class SolvedBoard(currentBoard: FileContent) {
+  def toIntMap(currentBoard: Array[String]): Array[Array[Int]] = {
+    def getIntArray(str: String, expectedLength: Int): Array[Int] = {
+      if (str.length != expectedLength) ExitWith(3, "Error: Every line should have the same length.")
+      str.map(char => if ((char == 'o') || (char == '\n')) 0
+      else if (char == '.') 1
+      else ExitWith(2, s"Error: Unknown $char character.").code).toArray
+    }
+
+    val length = currentBoard(0).length
+    currentBoard.map(line => getIntArray(line, length))
+  }
+
   def solve(currentBoard: Array[String]): Array[String] = {
-    case class Square(x: Int, y: Int, size: Int) {
-      def isOutOfBounds(optBoard: Array[Array[Int]], pos: Square): Boolean = {
-        ((pos.x < 0 || pos.y < 0) || (pos.x > optBoard.length - 1 || pos.y > optBoard(pos.x).length - 1))
-      }
-
-      def toNext(board: Array[Array[Int]]): Option[Square] = {
-        if (!isOutOfBounds(board, Square(this.x, this.y + 1, 0))) Some(Square(this.x, this.y + 1, 0))
-        else if (!isOutOfBounds(board, Square(this.x + 1, 1, 0))) Some(Square(this.x + 1, 1, 0))
-        else None
-      }
-
-      def groupDots(dots: Array[Array[Int]]): Array[Int] =
-        Array(dots(this.x - 1)(this.y - 1), dots(this.x)(this.y - 1), dots(this.x - 1)(this.y))
-
-      def isSquare(board: Array[Array[Int]]): Boolean = (groupDots(board).min > 0 && board(this.x)(this.y) > 0)
-
-      def getSquareSize(board: Array[Array[Int]]): Int = groupDots(board).min + 1
-    }
-
-    def toIntMap(currentBoard: Array[String]): Array[Array[Int]] = {
-      def getIntArray(str: String, expectedLength: Int): Array[Int] = {
-        if (str.length != expectedLength) ExitWith(3, "Error: Every line should have the same length.")
-        str.map(char => if ((char == 'o') || (char == '\n')) 0
-        else if (char == '.') 1
-        else ExitWith(2, s"Error: Unknown $char character.").code).toArray
-      }
-
-      val length = currentBoard(0).length
-      currentBoard.map(line => getIntArray(line, length))
-    }
-
     def findBiggestSquare(board: Array[Array[Int]]): Square = {
       def updateBoardValues(board: Array[Array[Int]], square: Square): Array[Array[Int]] = {
         board(square.x)(square.y) = square.size
@@ -94,5 +75,6 @@ class SolvedBoard(currentBoard: FileContent) {
   }
 
   if (currentBoard.content.isEmpty) ExitWith(1, "Empty file content.")
+
   val result: Array[String] = solve(currentBoard.content.get)
 }
