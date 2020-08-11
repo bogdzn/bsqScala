@@ -3,7 +3,7 @@ package bsq
 class FileContent(filenameOption: Option[String]) {
   def isEmpty(option: Option[Array[String]]): Boolean = option.isEmpty
 
-  def get(filenameOption: Option[String]): Option[Array[String]] = {
+  def getFile(filenameOption: Option[String]): Option[Array[String]] = {
     def using[A <: {def close(): Unit}, B](resource: A)(f: A => B): B =
       try f(resource) finally resource.close()
 
@@ -16,5 +16,5 @@ class FileContent(filenameOption: Option[String]) {
     catch { case e: Throwable => None }
   }
 
-  val content: Option[Array[String]] = get(filenameOption)
+  val content: Option[Array[String]] = getFile(filenameOption)
 }

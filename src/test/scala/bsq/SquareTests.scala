@@ -2,8 +2,7 @@ import bsq._
 import org.scalatest.funsuite.AnyFunSuite
 import scala.util.Random
 
-class SetSpec extends AnyFunSuite {
-
+class SquareTests extends AnyFunSuite {
   def generateIntArray(size: Int): Array[Array[Int]] = {
     def createSingleArray(size: Int): Array[Int] = {
       val rand = new Random()
