@@ -54,7 +54,7 @@ class Solver {
         startOfLine + ("x" * sqSize) + endOfLine
       }
 
-      def isLineWithSquare(bsq: Square, lineCount: Int): Boolean = (bsq.x - lineCount >= 0 && bsq.x - lineCount <= bsq.size)
+      def isLineWithSquare(bsq: Square, lineCount: Int): Boolean = (bsq.x - lineCount >= 0 && bsq.x - lineCount < bsq.size)
 
       for (idx <- oldBoard.indices)
         if (isLineWithSquare(bsq, idx))
