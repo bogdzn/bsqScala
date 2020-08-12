@@ -13,11 +13,13 @@ class SolvedBoard(currentBoard: FileContent) {
     }
 
     if (currentBoard.isEmpty) None
-    val length = currentBoard.get(0).length
-    Some(currentBoard.get.map(line =>
-      if (getIntArray(line, length).isEmpty) return None
-      else getIntArray(line, length).get)
-    )
+    else {
+      val length = currentBoard.get(0).length
+      Some(currentBoard.get.map(line =>
+        if (getIntArray(line, length).isEmpty) return None
+        else getIntArray(line, length).get)
+      )
+    }
   }
 
   def solve(currentBoard: Option[Array[String]]): Option[Array[String]] = {
