@@ -1,6 +1,6 @@
 package bsq
 
-class FileContent(filenameOption: Option[String]) {
+class FileHandler {
   def isEmpty(option: Option[Array[String]]): Boolean = option.isEmpty
 
   def getFile(filenameOption: Option[String]): Option[Array[String]] = {
@@ -15,6 +15,4 @@ class FileContent(filenameOption: Option[String]) {
     }
     catch { case e: Throwable => None }
   }
-
-  val content: Option[Array[String]] = getFile(filenameOption)
 }

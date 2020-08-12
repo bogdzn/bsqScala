@@ -5,9 +5,12 @@ object Bsq {
     if (args.length != 1) {
       println("Error: Expected 1 argument.")
     } else {
-      val solvedBoard: SolvedBoard = new SolvedBoard(new FileContent(args.headOption))
-      if (solvedBoard.result.isEmpty) println("Error during map parsing.")
-      else solvedBoard.result.get.foreach(e => println(e))
+      val solver = new Solver
+      val file = new FileHandler
+      val board = solver.solve(file.getFile(args.headOption))
+
+      if (board.isEmpty) println("Error during map parsing.")
+      else board.get.foreach(e => println(e))
     }
   }
 }

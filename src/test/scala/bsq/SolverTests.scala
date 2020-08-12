@@ -2,8 +2,8 @@ import bsq._
 import org.scalatest.funsuite.AnyFunSuite
 
 class SolvedBoardTests extends AnyFunSuite {
-  val fileContent = new FileContent(Option("./maps/intermediate_map_100_100"))
-  val board = new SolvedBoard(fileContent)
+  val fileContent = new FileHandler
+  val board = new Solver
 
   def genStringArr(size: Int, fillWith: String): Array[String] =
     Array.fill[String](size)(fillWith)
@@ -25,4 +25,12 @@ class SolvedBoardTests extends AnyFunSuite {
 
     assert(board.toIntMap(emptyBoard).isEmpty, "intBoard should be empty.")
   }
+
+  test("toIntMap is uneven") {
+    val newBoard = Array("....o...o.o..", ".....", "..o.......")
+
+    assert(board.toIntMap(Option(newBoard)).isEmpty, "Uneven boards should return None.")
+  }
+
+
 }

@@ -1,13 +1,13 @@
 import bsq._
 import org.scalatest.funsuite.AnyFunSuite
 
-class FileContentTests extends AnyFunSuite {
+class FileHandlerTests extends AnyFunSuite {
     val validFilename: Option[String] = Option("./maps/intermediate_map_100_100")
     val invalidFilename: Option[String] = Option("./maps/fortnite")
     val emptyFilename: Option[String] = Option("")
     val noFilename: Option[String] = None
 
-    val fc = new FileContent(validFilename)
+    val fc = new FileHandler
 
     test("invalidFilename") {
         val board = fc.getFile(invalidFilename)

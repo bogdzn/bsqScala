@@ -1,7 +1,7 @@
 package  bsq
 import scala.annotation.tailrec
 
-class SolvedBoard(currentBoard: FileContent) {
+class Solver {
   def toIntMap(currentBoard: Option[Array[String]]): Option[Array[Array[Int]]] = {
     def getIntArray(str: String, expectedLength: Int): Option[Array[Int]] = {
       if (str.length != expectedLength) None
@@ -90,6 +90,4 @@ class SolvedBoard(currentBoard: FileContent) {
       else Some(getSolvedMap(bsq, currentBoard.get))
     }
   }
-
-  val result: Option[Array[String]] = solve(currentBoard.content)
 }
