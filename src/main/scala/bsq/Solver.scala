@@ -54,7 +54,7 @@ class Solver {
         startOfLine + ("x" * sqSize) + endOfLine
       }
 
-      def isLineWithSquare(bsq: Square, lineCount: Int): Boolean = (bsq.x - lineCount >= 0 && bsq.x - lineCount < bsq.size)
+      def isLineWithSquare(bsq: Square, lineCount: Int): Boolean = bsq.x - lineCount >= 0 && bsq.x - lineCount < bsq.size
 
       for (idx <- oldBoard.indices)
         if (isLineWithSquare(bsq, idx))
@@ -67,7 +67,7 @@ class Solver {
     def findFirstDot(board: Option[Array[Array[Int]]]): Square = {
       @tailrec
       def getFirstDot(board: Array[Array[Int]], pos: Square): Square = {
-        if (board(pos.x)(pos.y) == '.') pos
+        if (board(pos.x)(pos.y) == 1) pos
         else if (board.length == 1 && !pos.isOutOfBounds(board, Square(pos.x, pos.y + 1, 1)))
           getFirstDot(board, Square(pos.x, pos.y + 1, 1))
         else if (board(0).length == 1 && !pos.isOutOfBounds(board, Square(pos.x + 1, pos.y, 1)))
