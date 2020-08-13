@@ -91,12 +91,6 @@ class SolvedBoardTests extends AnyFunSuite {
     assert(compareSolvedMap("intermediate_map_1000_1000"), "1000x1000 failed.")
     assert(compareSolvedMap("intermediate_map_1000_1000"), "1000x1000(2) failed.")
   }
-/*
-  test("biggest maps...") {
-    assert(compareSolvedMap("intermediate_map_2000_2000"), "2000x2000 failed.")
-    assert(compareSolvedMap("intermediate_map_5000_5000"), "5000x5000 failed.")
-    assert(compareSolvedMap("intermediate_map_10000_10000"), "10000x10000 failed.")
-  }*/
 
   test("testing edge cases...") {
     assert(compareSolvedMap("intermediate_map_empty_corners"), "empty corners failed.")
