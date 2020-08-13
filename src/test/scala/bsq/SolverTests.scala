@@ -101,5 +101,17 @@ class SolvedBoardTests extends AnyFunSuite {
   test("testing edge cases...") {
     assert(compareSolvedMap("intermediate_map_empty_corners"), "empty corners failed.")
     assert(compareSolvedMap("intermediate_map_filled_corners"), "filled corners failed.")
+    assert(compareSolvedMap("intermediate_map_one_empty_column"), "One-column empty map failed.")
+    assert(compareSolvedMap("intermediate_map_one_filled_column"), "One-column filled map failed.")
+    assert(compareSolvedMap("intermediate_map_one_column_with_obstacles_25pc"), "One-column 25pc failed.")
+    assert(compareSolvedMap("intermediate_map_one_column_with_obstacles_50pc"), "One-column 50pc failed.")
+    assert(compareSolvedMap("intermediate_map_one_column_with_obstacles_75pc"), "One-column 75pc failed.")
+    assert(compareSolvedMap("intermediate_map_one_empty_line"), "One-line empty map failed.")
+    assert(compareSolvedMap("intermediate_map_one_filled_line"), "One-line filled map failed.")
+    assert(compareSolvedMap("intermediate_map_one_line_with_obstacles_25pc"), "One-line 25pc failed.")
+    assert(compareSolvedMap("intermediate_map_one_line_with_obstacles_50pc"), "One-line 50pc failed.")
+    assert(compareSolvedMap("intermediate_map_one_line_with_obstacles_75pc"), "One-line 75pc failed.")
+    assert(compareSolvedMap("intermediate_map_one_empty_box"), "empty box failed.")
+    assert(compareSolvedMap("intermediate_map_one_filled_box"), "filled box failed.")
   }
 }
