@@ -31,7 +31,7 @@ class Solver {
       @tailrec
       def getBiggestSquare(board: Array[Array[Int]], posOpt: Option[Square], bsq: Square): Square = {
         if (posOpt.isEmpty) bsq else {
-          val pos = posOpt.getOrElse(Square(1, 1, 0))
+          val pos = posOpt.get
 
           if (pos.isSquare(board)) {
             val newBsq = Square(pos.x, pos.y, pos.getSquareSize(board))
@@ -42,7 +42,7 @@ class Solver {
           } else getBiggestSquare(board, pos.toNext(board), bsq)
         }
       }
-      val emptySquare = Square(0, 0,0)
+      val emptySquare = Square(0, 0, 0)
       val startPosition = Square(1, 1, 0)
 
       if (board.isEmpty) emptySquare
@@ -87,10 +87,7 @@ class Solver {
       if (board.isEmpty) Square(0, 0, 0) else getFirstDot(board.get, Square(0, 0, 1))
     }
 
-    if (currentBoard.isEmpty) {
-      println("Error: Board could not be read.")
-      None
-    } else {
+    if (currentBoard.isEmpty) None else {
       val bsq: Square =
         if (isEdgeCase(currentBoard.get)) findFirstDot(toIntMap(currentBoard))
         else findBiggestSquare(toIntMap(currentBoard))
