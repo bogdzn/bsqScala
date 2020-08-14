@@ -4,21 +4,20 @@ import scala.annotation.tailrec
 class Solver {
   def toIntMap(currentBoard: Option[Array[String]]): Option[Array[Array[Int]]] = {
     def getIntArray(str: String, expectedLength: Int): Option[Array[Int]] = {
-      if (str.length != expectedLength) None
-      else {
-        Some(str.map(char => if ((char == 'o') || (char == '\n')) 0
-        else if (char == '.') 1
+      val emptySpot = 0
+      val filledSpot = 1
+
+      if (str.length != expectedLength) None else {
+        Some(str.map(char => if ((char == 'o') || (char == '\n')) emptySpot
+        else if (char == '.') filledSpot
         else return None).toArray)
       }
     }
 
-    if (currentBoard.isEmpty) None
-    else {
+    if (currentBoard.isEmpty) None else {
       val length = currentBoard.get(0).length
-      Some(currentBoard.get.map(line =>
-        if (getIntArray(line, length).isEmpty) return None
-        else getIntArray(line, length).get)
-      )
+
+      Some(currentBoard.get.map(line => getIntArray(line, length).getOrElse(return None)))
     }
   }
 
@@ -31,20 +30,23 @@ class Solver {
 
       @tailrec
       def getBiggestSquare(board: Array[Array[Int]], posOpt: Option[Square], bsq: Square): Square = {
-        if (posOpt.isEmpty) bsq
-        else {
+        if (posOpt.isEmpty) bsq else {
           val pos = posOpt.getOrElse(Square(1, 1, 0))
+
           if (pos.isSquare(board)) {
             val newBsq = Square(pos.x, pos.y, pos.getSquareSize(board))
-            if (newBsq.size > bsq.size)
-              getBiggestSquare(updateBoardValues(board, newBsq), pos.toNext(board), newBsq)
-            else getBiggestSquare(updateBoardValues(board, newBsq), pos.toNext(board), bsq)
+            val newBoard = updateBoardValues(board, newBsq)
+
+            if (newBsq.size > bsq.size) getBiggestSquare(newBoard, pos.toNext(board), newBsq)
+            else getBiggestSquare(newBoard, pos.toNext(board), bsq)
           } else getBiggestSquare(board, pos.toNext(board), bsq)
         }
       }
+      val emptySquare = Square(0, 0,0)
+      val startPosition = Square(1, 1, 0)
 
-      if (board.isEmpty) Square(0, 0, 0)
-      else getBiggestSquare(board.get, Some(Square(1, 1, 0)), Square(0, 0, 0))
+      if (board.isEmpty) emptySquare
+      else getBiggestSquare(board.get, Some(startPosition), emptySquare)
     }
 
     def getSolvedMap(bsq: Square, oldBoard: Array[String]): Array[String] = {
@@ -67,27 +69,33 @@ class Solver {
     def findFirstDot(board: Option[Array[Array[Int]]]): Square = {
       @tailrec
       def getFirstDot(board: Array[Array[Int]], pos: Square): Square = {
-        if (board(pos.x)(pos.y) == 1) pos
-        else if (board.length == 1 && !pos.isOutOfBounds(board, Square(pos.x, pos.y + 1, 1)))
-          getFirstDot(board, Square(pos.x, pos.y + 1, 1))
-        else if (board(0).length == 1 && !pos.isOutOfBounds(board, Square(pos.x + 1, pos.y, 1)))
-          getFirstDot(board, Square(pos.x + 1, pos.y, 1))
-        else Square(0, 0, 0)
+        def shouldGetToNextColumn(board: Array[Array[Int]], pos: Square): Boolean =
+          board.length == 1 && !pos.isOutOfBounds(board, Square(pos.x, pos.y + 1, 1))
+
+        def shouldGetToNextLine(board: Array[Array[Int]], pos: Square): Boolean =
+          board(0).length == 1 && !pos.isOutOfBounds(board, Square(pos.x + 1, pos.y, 1))
+
+        val filledSpot = 1
+        val noSquareFound = Square(0, 0, 0)
+
+        if (board(pos.x)(pos.y) == filledSpot) pos
+        else if (shouldGetToNextColumn(board, pos)) getFirstDot(board, Square(pos.x, pos.y + 1, 1))
+        else if (shouldGetToNextLine(board, pos))   getFirstDot(board, Square(pos.x + 1, pos.y, 1))
+        else noSquareFound
       }
 
-      if (board.isEmpty) Square(0, 0, 0)
-      else getFirstDot(board.get, Square(0, 0, 1))
+      if (board.isEmpty) Square(0, 0, 0) else getFirstDot(board.get, Square(0, 0, 1))
     }
 
     if (currentBoard.isEmpty) {
       println("Error: Board could not be read.")
       None
     } else {
-      val bsq: Square = if (isEdgeCase(currentBoard.get)) findFirstDot(toIntMap(currentBoard))
-      else findBiggestSquare(toIntMap(currentBoard))
+      val bsq: Square =
+        if (isEdgeCase(currentBoard.get)) findFirstDot(toIntMap(currentBoard))
+        else findBiggestSquare(toIntMap(currentBoard))
 
-      if (bsq.size == 0) currentBoard
-      else Some(getSolvedMap(bsq, currentBoard.get))
+      if (bsq.size == 0) currentBoard else Some(getSolvedMap(bsq, currentBoard.get))
     }
   }
 }
