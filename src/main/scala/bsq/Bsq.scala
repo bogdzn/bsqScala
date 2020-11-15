@@ -9,7 +9,9 @@ object Bsq {
       val file = new FileHandler
       val board = solver.solve(file.getFile(args.headOption))
 
-      if (board.isEmpty) println("Error during map parsing.") else board.get.foreach(e => println(e))
+      if (board.isEmpty) println("Error during map parsing.")
+      else board.get.foreach(e => println(e))
     }
   }
 }
+

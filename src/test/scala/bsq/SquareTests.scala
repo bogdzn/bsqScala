@@ -11,7 +11,11 @@ class SquareTests extends AnyFunSuite {
     Array.fill[Array[Int]](size)(createSingleArray(size))
   }
 
-  def modifyBoard(targetPos: Square, modification: Int, board: Array[Array[Int]]): Array[Array[Int]] = {
+  def modifyBoard(
+      targetPos: Square,
+      modification: Int,
+      board: Array[Array[Int]]
+  ): Array[Array[Int]] = {
     board(targetPos.x)(targetPos.y) = modification
     board(targetPos.x - 1)(targetPos.y) = modification
     board(targetPos.x - 1)(targetPos.y - 1) = modification
@@ -22,7 +26,6 @@ class SquareTests extends AnyFunSuite {
   val posOutOfBounds: Square = Square(232, 12, 0)
   val posCorrect: Square = Square(1, 1, 0)
   val intBoard: Array[Array[Int]] = generateIntArray(10)
-
 
   test("isOutOfBounds") {
     val expectTrue = posOutOfBounds.isOutOfBounds(intBoard, posOutOfBounds)
@@ -35,9 +38,9 @@ class SquareTests extends AnyFunSuite {
   test("toNext") {
     val posAtEndOfLine = Square(1, 9, 0)
 
-    val expectFalse : Option[Square] = posOutOfBounds.toNext(intBoard)
-    val expectTrue : Option[Square] = posCorrect.toNext(intBoard)
-    val expectTrueAlso : Option[Square] = posAtEndOfLine.toNext(intBoard)
+    val expectFalse: Option[Square] = posOutOfBounds.toNext(intBoard)
+    val expectTrue: Option[Square] = posCorrect.toNext(intBoard)
+    val expectTrueAlso: Option[Square] = posAtEndOfLine.toNext(intBoard)
 
     assert(expectTrue.nonEmpty, "toNext should be ok for position(1, 1).")
     assert(expectTrue.get.x == 1, "expectTrue.x should be equal to 1.")

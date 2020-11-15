@@ -4,7 +4,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import scala.sys.process._
 
 class BsqTests extends AnyFunSuite {
-  def executeMain(args: Array[String]) : Option[String] = {
+  def executeMain(args: Array[String]): Option[String] = {
     System.setOut(new PrintStream(new FileOutputStream("file.out")))
 
     try {
@@ -47,3 +47,4 @@ class BsqTests extends AnyFunSuite {
 
   }
 }
+
