@@ -2,9 +2,24 @@ package bsq
 
 object Bsq {
   def main(args: Array[String]): Unit = {
-    val file = new FileHandler
-    val solver = Solver(file.read(args.headOption))
 
-    solver.solve().map(_.foreach(println(_)))
+    val file = new FileHandler
+    val fileContent = file.read(args.headOption)
+    val solver = new Solver(fileContent)
+
+    if (fileContent.isEmpty || file.fileIsEmpty(fileContent)) {
+      println("Error reading file.")
+    } else {
+
+      val board = Board(fileContent.get)
+      val numBoard = board.toIntBoard()
+      val biggestSquare =
+        if (board.isEdgeCase())
+          solver.getFirstDot(numBoard, Square(0, 0))
+        else solver.getBiggestSquare(numBoard, Some(Square(1, 1)), Square(0, 0))
+      val solvedBoard = board.toSolvedMap(biggestSquare)
+
+      solvedBoard.foreach(line => println(line))
+    }
   }
 }

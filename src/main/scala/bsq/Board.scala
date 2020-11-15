@@ -26,7 +26,7 @@ case class Board(board: Array[String]) {
   private def isLineWithSquare(sq: Square, lineCount: Int): Boolean =
     sq.x - lineCount >= 0 && sq.x - lineCount < sq.size
 
-  def isValidBoard(): Boolean = {
+    def isValidBoard(): Boolean = {
     val boardSize = this.board.size
     val expectedLen = if (boardSize == 0) 0 else this.board(0).length()
 
