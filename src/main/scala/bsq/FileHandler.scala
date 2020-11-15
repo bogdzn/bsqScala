@@ -3,11 +3,11 @@ package bsq
 case class FileHandler() {
   def fileIsEmpty(option: Option[Array[String]]): Boolean = option.isEmpty
 
-  def read(filenameOption: Option[String]): Option[Array[String]] = {
-    def using[A <: { def close(): Unit }, B](resource: A)(f: A => B): B =
-      try f(resource)
-      finally resource.close()
+  private def using[A <: { def close(): Unit }, B](resource: A)(f: A => B): B =
+    try f(resource)
+    finally resource.close()
 
+  def read(filenameOption: Option[String]): Option[Array[String]] = {
     val filename: String = filenameOption.getOrElse("No name given.")
     try {
       val lines = using(io.Source.fromFile(filename)) { source =>
