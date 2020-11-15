@@ -10,7 +10,7 @@ class SolvedBoardTests extends AnyFunSuite {
 
   def compareSolvedMap(path: String): Boolean = {
     def wrapperSolver(filepath: String): Array[String] = {
-      val fc = fileContent.getFile(Option(filepath))
+      val fc = fileContent.read(Option(filepath))
       val brd = board.solve(fc)
 
       assert(brd.nonEmpty, s"$filepath should not be empty after solver.")
@@ -93,7 +93,7 @@ class SolvedBoardTests extends AnyFunSuite {
 
   test("filled board 34x137") {
     val testBoard =
-      fileContent.getFile(Option("./maps/intermediate_map_34_137_filled"))
+      fileContent.read(Option("./maps/intermediate_map_34_137_filled"))
     val resultBoard = board.solve(testBoard)
 
     assert(resultBoard.nonEmpty, "result board should not be empty.")

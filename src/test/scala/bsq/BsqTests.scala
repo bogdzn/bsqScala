@@ -10,7 +10,7 @@ class BsqTests extends AnyFunSuite {
     try {
       Bsq.main(args)
       val fd = new FileHandler
-      val output = fd.getFile(Option("file.out"))
+      val output = fd.read(Option("file.out"))
       System.out.close()
       if ("rm file.out".! == 0) Some(output.toString) else None
     } catch {

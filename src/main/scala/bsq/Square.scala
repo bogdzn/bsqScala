@@ -1,16 +1,16 @@
 package bsq
 
-case class Square(x: Int, y: Int, size: Int) {
+case class Square(x: Int, y: Int, size: Int = 0) {
   def isOutOfBounds(optBoard: Array[Array[Int]], pos: Square): Boolean =
     (pos.x < 0 || pos.y < 0) || (pos.x > optBoard.length - 1 || pos.y > optBoard(
       pos.x
     ).length - 1)
 
   def toNext(board: Array[Array[Int]]): Option[Square] = {
-    if (!isOutOfBounds(board, Square(this.x, this.y + 1, 0)))
-      Some(Square(this.x, this.y + 1, 0))
-    else if (!isOutOfBounds(board, Square(this.x + 1, 1, 0)))
-      Some(Square(this.x + 1, 1, 0))
+    if (!isOutOfBounds(board, Square(this.x, this.y + 1)))
+      Some(Square(this.x, this.y + 1))
+    else if (!isOutOfBounds(board, Square(this.x + 1, 1)))
+      Some(Square(this.x + 1, 1))
     else None
   }
 
@@ -26,4 +26,3 @@ case class Square(x: Int, y: Int, size: Int) {
 
   def getSquareSize(board: Array[Array[Int]]): Int = groupDots(board).min + 1
 }
-

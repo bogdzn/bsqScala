@@ -10,19 +10,19 @@ class FileHandlerTests extends AnyFunSuite {
   val fc = new FileHandler
 
   test("invalidFilename.") {
-    val board = fc.getFile(invalidFilename)
+    val board = fc.read(invalidFilename)
 
     assert(board.isEmpty, "getFile should fail.")
   }
 
   test("noFilename.") {
-    val board = fc.getFile(noFilename)
+    val board = fc.read(noFilename)
 
     assert(board.isEmpty, "getFile should fail.")
   }
 
   test("validFilename.") {
-    val board = fc.getFile(validFilename)
+    val board = fc.read(validFilename)
 
     assert(board.nonEmpty, "getFile should not return None.")
     assert(board.get.length == 100, "getFile should be 100 lines long.")
@@ -33,7 +33,7 @@ class FileHandlerTests extends AnyFunSuite {
   }
 
   test("isEmpty.") {
-    val board = fc.getFile(Option("build.sbt"))
+    val board = fc.read(Option("build.sbt"))
     val bool = fc.isEmpty(board)
 
     assert(!bool, "Map should not be empty.")
