@@ -26,11 +26,11 @@ case class Board(board: Array[String]) {
   private def isLineWithSquare(sq: Square, lineCount: Int): Boolean =
     sq.x - lineCount >= 0 && sq.x - lineCount < sq.size
 
-    def isValidBoard(): Boolean = {
+  def isValidBoard(): Boolean = {
     val boardSize = this.board.size
     val expectedLen = if (boardSize == 0) 0 else this.board(0).length()
 
-    this.board.filter(str => isValidLine(expectedLen, str)).length == boardSize
+    this.board.filter(str => !isValidLine(expectedLen, str)).length == boardSize
   }
 
   def toIntBoard(): Array[Array[Int]] =
@@ -39,7 +39,7 @@ case class Board(board: Array[String]) {
   def isEdgeCase(): Boolean =
     (this.board.length == 1 || this.board(0).length == 1)
 
-  def toSolvedMap(s: Square): Array[String] = {
+  def toSolvedBoard(s: Square): Array[String] = {
     for (idx <- this.board.indices) {
       if (isLineWithSquare(s, idx))
         this.board(idx) = updateLine(s.y - s.size + 1, s.size, this.board(idx))
