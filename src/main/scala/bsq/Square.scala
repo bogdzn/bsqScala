@@ -2,9 +2,8 @@ package bsq
 
 case class Square(x: Int, y: Int, size: Int = 0) {
   def isOutOfBounds(optBoard: Array[Array[Int]], pos: Square): Boolean =
-    (pos.x < 0 || pos.y < 0) || (pos.x > optBoard.length - 1 || pos.y > optBoard(
-      pos.x
-    ).length - 1)
+    (pos.x < 0 || pos.y < 0) || (pos.x > optBoard.length - 1 ||
+    pos.y > optBoard(pos.x).length - 1)
 
   def toNext(board: Array[Array[Int]]): Option[Square] = {
     if (!isOutOfBounds(board, Square(this.x, this.y + 1)))

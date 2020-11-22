@@ -7,7 +7,7 @@ class FileHandlerTests extends AnyFunSuite {
   val emptyFilename: Option[String] = Option("")
   val noFilename: Option[String] = None
 
-  val fc = new FileHandler
+  val fc = FileHandler()
 
   test("invalidFilename.") {
     val board = fc.read(invalidFilename)
@@ -30,13 +30,6 @@ class FileHandlerTests extends AnyFunSuite {
       board.get.head.length == 100,
       "getLines's first line should be 100 characters long."
     )
-  }
-
-  test("isEmpty.") {
-    val board = fc.read(Option("build.sbt"))
-    val bool = fc.isEmpty(board)
-
-    assert(!bool, "Map should not be empty.")
   }
 }
 

@@ -2,19 +2,32 @@ import bsq._
 import org.scalatest.funsuite.AnyFunSuite
 
 class SolvedBoardTests extends AnyFunSuite {
-  val fileContent = new FileHandler
-  val board = new Solver
+  val fileContent = FileHandler()
 
   def genStringArr(size: Int, fillWith: String): Array[String] =
     Array.fill[String](size)(fillWith)
 
   def compareSolvedMap(path: String): Boolean = {
     def wrapperSolver(filepath: String): Array[String] = {
-      val fc = fileContent.read(Option(filepath))
-      val brd = board.solve(fc)
+      val fc = fileContent.read(Some(filepath))
 
-      assert(brd.nonEmpty, s"$filepath should not be empty after solver.")
-      brd.get
+      if (fc.isEmpty) {
+        assert(fc.nonEmpty, s"Error: $filepath should not be empty.")
+        Array[String]()
+      } else {
+        val board = Board(fc.get)
+        val numBoard = board.toIntBoard()
+        val solver = Solver(fc)
+        val bsq =
+          if (board.isEdgeCase()) solver.getFirstDot(numBoard, Square(0, 0))
+          else
+            solver.getBiggestSquare(numBoard, Some(Square(1, 1)), Square(0, 0))
+
+        val brd = board.toSolvedBoard(bsq)
+
+        assert(brd.nonEmpty, s"$filepath should not be empty after solver.")
+        brd
+      }
     }
 
     def compareTwoArrays(
@@ -64,47 +77,8 @@ class SolvedBoardTests extends AnyFunSuite {
     )
   }
 
-  test("toIntMap is valid") {
-    val validBoard = Some(genStringArr(10, "....o.oo.o."))
-
-    assert(board.toIntMap(validBoard).nonEmpty, "intBoard should not be empty.")
-  }
-
-  test("toIntMap is invalid") {
-    val invalidBoard = Some(genStringArr(10, "..asdasd..."))
-
-    assert(board.toIntMap(invalidBoard).isEmpty, "intBoard should be empty.")
-  }
-
-  test("toIntMap is empty") {
-    val emptyBoard: Option[Array[String]] = None
-
-    assert(board.toIntMap(emptyBoard).isEmpty, "intBoard should be empty.")
-  }
-
-  test("toIntMap is uneven") {
-    val newBoard = Array("....o...o.o..", ".....", "..o.......")
-
-    assert(
-      board.toIntMap(Option(newBoard)).isEmpty,
-      "Uneven boards should return None."
-    )
-  }
-
   test("filled board 34x137") {
-    val testBoard =
-      fileContent.read(Option("./maps/intermediate_map_34_137_filled"))
-    val resultBoard = board.solve(testBoard)
-
-    assert(resultBoard.nonEmpty, "result board should not be empty.")
-
-    val confirmedBoard = resultBoard.get
-
-    assert(confirmedBoard.length == 137, "result should be 34 lines long.")
-    assert(
-      confirmedBoard(0).length == 34,
-      "result's lines should be 127 characters long."
-    )
+    compareSolvedMap("./maps/intermediate_map_34_137_filled")
   }
 
   test("small maps....") {
@@ -185,4 +159,3 @@ class SolvedBoardTests extends AnyFunSuite {
     )
   }
 }
-
