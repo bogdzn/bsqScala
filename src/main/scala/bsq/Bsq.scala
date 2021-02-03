@@ -2,6 +2,7 @@ package bsq
 
 object Bsq {
   def main(args: Array[String]): Unit = {
+
     val file = new FileHandler
     val fileContent = file.read(args.headOption)
     val solver = new Solver(fileContent)
